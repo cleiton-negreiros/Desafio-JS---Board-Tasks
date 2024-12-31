@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio JS - Board de Tarefas DNC</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Board de tarefas</h1>
+        <form id="new-task-form" class="new-task-form">
+            <input type="text" id="task-name" class="task-name" placeholder="Nome da tarefa" required>
+            <input type="text" id="task-label" class="task-label" placeholder="Etiqueta" required>
+            <button type="submit" class="add-task-btn">+</button>
+        </form>
+        <ul id="task-list" class="task-list">
+            <!-- Tasks added dynamically! -->
+        </ul>
+        <p id="concluded-tasks-count" class="concluded-tasks-count">0 tarefas concluídas</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
