@@ -1,68 +1,136 @@
-window.onload = function() { // Execute the code below when the page finishes loading
-    const newTaskForm = document.getElementById('new-task-form'); // Select the task addition form
-    const taskList = document.getElementById('task-list'); // Select the task list
+window.onload = function() { // Waits for the page to load before running the script
+    const newTaskForm = document.getElementById('new-task-form');
+    const taskList = document.getElementById('task-list');
 
     // Add submit event to the form
-    newTaskForm.addEventListener('submit', function(event) {
+    newTaskForm.addEventListener('submit', handleFormSubmit);
+
+    // Handles the form submit event
+    function handleFormSubmit(event) {
         event.preventDefault();
 
-        const taskName = document.getElementById('task-name').value; // Select the value of the task name input
-        const taskLabel = document.getElementById('task-label').value; // Select the value of the task label input
+        const taskName = getTaskName();
+        const taskLabel = getTaskLabel();
 
+        const taskItem = createTaskItem(taskName, taskLabel);
+        appendTaskItem(taskItem);
+
+        clearForm();
+        updateConcludedTasksCount();
+    }
+
+    // Gets the task name from the input
+    function getTaskName() {
+        return document.getElementById('task-name').value;
+    }
+
+    // Gets the task label from the input
+    function getTaskLabel() {
+        return document.getElementById('task-label').value;
+    }
+
+    // Creates a new task item
+    function createTaskItem(taskName, taskLabel) {
         const taskItem = document.createElement('li');
         taskItem.className = 'task-item';
 
-        const taskDetails = document.createElement('div');
-        taskDetails.className = 'task-details';
+        const taskDetails = createTaskDetails(taskName, taskLabel);
+        const concludeBtn = createConcludeButton();
 
-        const taskTitle = document.createElement('h2');
-        taskTitle.textContent = taskName;
-
-        const taskLabelElement = document.createElement('h1');
-        taskLabelElement.className = 'label';
-        taskLabelElement.textContent = taskLabel;
-
-        // Add creation date
-        const taskDate = document.createElement('p');
-        taskDate.appendChild(taskLabelElement);
-        taskDate.appendChild(document.createTextNode(` Created on: ${new Date().toLocaleDateString()}`));
-
-        // Add conclusion button
-        const concludeBtn = document.createElement('button');
-        concludeBtn.className = 'conclude-btn';
-        concludeBtn.textContent = 'Conclude';
-
-        // Add elements to the screen
-        taskDetails.appendChild(taskTitle);
-        taskDetails.appendChild(taskDate);
         taskItem.appendChild(taskDetails);
         taskItem.appendChild(concludeBtn);
 
-        taskList.appendChild(taskItem); // Add the task to the task list
+        addConcludeButtonListener(concludeBtn, taskItem, taskDetails);
 
-        document.getElementById('task-name').value = ''; // Clear the task name input
-        document.getElementById('task-label').value = ''; // Clear the task label input
+        return taskItem;
+    }
 
-        // Add conclusion event
+    // Creates the task details
+    function createTaskDetails(taskName, taskLabel) {
+        const taskDetails = document.createElement('div');
+        taskDetails.className = 'task-details';
+
+        const taskTitle = createTaskTitle(taskName);
+        const taskDate = createTaskDate(taskLabel);
+
+        taskDetails.appendChild(taskTitle);
+        taskDetails.appendChild(taskDate);
+
+        return taskDetails;
+    }
+
+    // Creates the task title
+    function createTaskTitle(taskName) {
+        const taskTitle = document.createElement('h2');
+        taskTitle.textContent = taskName;
+        return taskTitle;
+    }
+
+    // Creates the task date
+    function createTaskDate(taskLabel) {
+        const taskLabelElement = createTaskLabel(taskLabel);
+        const taskDate = document.createElement('p');
+        taskDate.appendChild(taskLabelElement);
+        taskDate.appendChild(document.createTextNode(` Criado em: ${new Date().toLocaleDateString()}`));
+        return taskDate;
+    }
+
+    // Creates the task label
+    function createTaskLabel(taskLabel) {
+        const taskLabelElement = document.createElement('h1');
+        taskLabelElement.className = 'label';
+        taskLabelElement.textContent = taskLabel;
+        return taskLabelElement;
+    }
+
+    // Creates the conclude button
+    function createConcludeButton() {
+        const concludeBtn = document.createElement('button');
+        concludeBtn.className = 'conclude-btn';
+        concludeBtn.textContent = 'Concluir';
+        return concludeBtn;
+    }
+
+    // Adds the click event to the conclude button
+    function addConcludeButtonListener(concludeBtn, taskItem, taskDetails) {
         concludeBtn.addEventListener('click', function() {
-            taskItem.classList.add('concluded');
-            taskTitle.classList.add('concluded');
-            concludeBtn.remove(); // Remove the conclusion button
-
-            const concludedIcon = document.createElement('h1');
-            concludedIcon.className = 'concluded-icon';
-            concludedIcon.textContent = '✔';
-            taskItem.appendChild(concludedIcon);
-
+            markTaskAsConcluded(taskItem, taskDetails);
             updateConcludedTasksCount();
         });
+    }
 
-        updateConcludedTasksCount();
-    });
+    // Marks the task as concluded
+    function markTaskAsConcluded(taskItem, taskDetails) {
+        taskItem.classList.add('concluded');
+        taskDetails.querySelector('h2').classList.add('concluded');
+        concludeBtn.remove();
 
-    // Function to update the count of concluded tasks
+        const concludedIcon = createConcludedIcon();
+        taskItem.appendChild(concludedIcon);
+    }
+
+    // Creates the concluded icon
+    function createConcludedIcon() {
+        const concludedIcon = document.createElement('h1');
+        concludedIcon.className = 'concluded-icon';
+        concludedIcon.textContent = '✔';
+        return concludedIcon;
+    }
+
+    // Appends the task item to the task list
+    function appendTaskItem(taskItem) {
+        taskList.appendChild(taskItem);
+    }
+
+    // Clears the form fields
+    function clearForm() {
+        document.getElementById('task-name').value = '';
+        document.getElementById('task-label').value = '';
+    }
+
+    // Updates the count of concluded tasks
     function updateConcludedTasksCount() {
-        const concludedTasks = document.querySelectorAll('.task-item.concluded'); // Select all concluded tasks
-        document.getElementById('concluded-tasks-count').textContent = `${concludedTasks.length} task${concludedTasks.length > 1 ? 's' : ''} concluded`;
+        const concludedTasks = document.querySelectorAll('.task-item.concluded');
+        document.getElementById('concluded-tasks-count').textContent = `${concludedTasks.length} tarefas${concludedTasks.length > 1 ? 's' : ''} concluídas`;
     }
 };
