@@ -68,11 +68,17 @@ window.onload = function() { // Waits for the page to load before running the sc
 
     // Creates the task date
     function createTaskDate(taskLabel) {
+        const taskDateContainer = document.createElement('p');
+        taskDateContainer.className = 'task-date-container';
+
         const taskLabelElement = createTaskLabel(taskLabel);
-        const taskDate = document.createElement('p');
-        taskDate.appendChild(taskLabelElement);
-        taskDate.appendChild(document.createTextNode(` Criado em: ${new Date().toLocaleDateString()}`));
-        return taskDate;
+        const dateElement = document.createElement('div');
+        dateElement.textContent = `Criado em: ${new Date().toLocaleDateString()}`;
+
+        taskDateContainer.appendChild(taskLabelElement);
+        taskDateContainer.appendChild(dateElement);
+
+        return taskDateContainer;
     }
 
     // Creates the task label
@@ -94,19 +100,19 @@ window.onload = function() { // Waits for the page to load before running the sc
     // Adds the click event to the conclude button
     function addConcludeButtonListener(concludeBtn, taskItem, taskDetails) {
         concludeBtn.addEventListener('click', function() {
-            markTaskAsConcluded(taskItem, taskDetails);
-            updateConcludedTasksCount();
+            markTaskAsConcluded(taskItem, taskDetails, concludeBtn); // Pass concludeBtn as an argument
+            updateConcludedTasksCount(); // Ensure the count is updated
         });
     }
 
     // Marks the task as concluded
-    function markTaskAsConcluded(taskItem, taskDetails) {
+    function markTaskAsConcluded(taskItem, taskDetails, concludeBtn) { // Add concludeBtn as a parameter
         taskItem.classList.add('concluded');
         taskDetails.querySelector('h2').classList.add('concluded');
-        concludeBtn.remove();
+        concludeBtn.remove(); // Remove the conclude button
 
         const concludedIcon = createConcludedIcon();
-        taskItem.appendChild(concludedIcon);
+        taskItem.appendChild(concludedIcon); // Append the concluded icon
     }
 
     // Creates the concluded icon
@@ -131,6 +137,6 @@ window.onload = function() { // Waits for the page to load before running the sc
     // Updates the count of concluded tasks
     function updateConcludedTasksCount() {
         const concludedTasks = document.querySelectorAll('.task-item.concluded');
-        document.getElementById('concluded-tasks-count').textContent = `${concludedTasks.length} tarefas${concludedTasks.length > 1 ? 's' : ''} concluídas`;
+        document.getElementById('concluded-tasks-count').textContent = `${concludedTasks.length} tarefa${concludedTasks.length > 1 ? 's' : ''} concluída${concludedTasks.length > 1 ? 's' : ''}`;
     }
 };

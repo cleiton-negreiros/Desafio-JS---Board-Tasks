@@ -4,24 +4,26 @@
 
 body {
     font-family: 'Rubik', sans-serif;
-    background-color: #11175E;
+    background-color: white;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    color: #fff;
+    color: #11175E;
 }
 
 .container {
     background: white;
     color: #11175E;
-    width: 33.2rem;
+    width: 90%;
+    max-width: 33.2rem;
     padding: 1.6rem;
     border-radius: 0.8rem;
     box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
     margin-bottom: 1.6rem; /* Adds space below the container */
+    overflow: hidden; /* Ensure the container expands with content */
 }
 
 /* Adds a style to the application title */
@@ -35,15 +37,17 @@ body {
 /* Adds a style to the new task form */
 .new-task-form {
     display: flex;
+    flex-direction: column;
+    width: 100%;
     margin-bottom: 1.6rem;
 }
 
 /* Adds a style to the new task form inputs */
 .new-task-form .task-name,
 .new-task-form .task-label {
-    flex: 1;
+    width: 100%;
     padding: 0.8rem;
-    margin-right: 0.8rem;
+    margin-bottom: 0.8rem;
     border: 0.1rem solid #ccc;
     border-radius: 0.4rem;
     font-size: 1rem;
@@ -51,14 +55,17 @@ body {
 
 /* Adds a style to the add task button */
 .new-task-form .add-task-btn {
+    width: 100%;
+    max-width: 200px; /* Fixed maximum width */
     padding: 0.8rem;
     background-color: #11175E;
     color: white;
     border: none;
     border-radius: 0.4rem;
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: 1.2rem; /* Fixed font size */
     font-weight: 700;
+    margin: 0 auto; /* Center the button */
 }
 
 /* Adds a style to the add task button when hovered */
@@ -70,15 +77,16 @@ body {
 .task-list {
     list-style: none;
     padding: 0;
-    max-height: 23rem;
+    width: 100%;
     overflow-y: auto;
+    max-height: none; /* Remove max-height to allow the container to grow */
 }
 
 /* Adds a style to the task item */
 .task-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 0.8rem;
     border: 0.1rem solid #ccc;
     border-radius: 0.4rem;
@@ -93,10 +101,11 @@ body {
 }
 
 .task-details {
-    flex: 1;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 0.8rem; /* Adds space between task details and conclude button/icon */
 }
 
 /* Adds a style to the task title and description */
@@ -118,38 +127,40 @@ body {
     font-weight: 500;
 }
 
-/* Adds a style to the task date */
-.task-details p {
+/* Adds a style to the task date container */
+.task-date-container {
     margin: 0.3rem 0 0;
     font-size: 0.8rem;
     color: #777;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items vertically */
 }
 
 /* Adds a style to the task label */
 .label {
-    background-color: #e2e3e5;
+    background-color: white; /* Set the background color to white */
     color: #555;
     padding: 0.2rem 0.5rem;
     border-radius: 16rem;
     font-size: 0.8rem;
-    margin-right: 0.5rem;
+    margin-bottom: 0.3rem; /* Add space between label and date */
+    border: 0.1rem solid #ccc; /* Add a gray border */
 }
 
 /* Adds a button style to the conclude button */
 .conclude-btn {
-    padding: 0.4rem 0.8rem;
+    width: 100px; /* Fixed width */
+    padding: 0.6rem; /* Fixed padding */
     background-color: #11175E;
     color: white;
     border: none;
     border-radius: 0.4rem;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 1rem; /* Fixed font size */
     font-weight: 500;
-    align-self: center;
-    margin-left: auto;
+    margin-top: 0.8rem;
+    text-align: center;
 }
 
 /* Adds a button style to the conclude button when hovered */
@@ -159,14 +170,17 @@ body {
 
 /* Adds a style to the concluded icon */
 .concluded-icon {
+    width: 100px; /* Fixed width */
     background-color: #28a745;
     color: white;
-    padding: 0.4rem 0.8rem;
+    padding: 0.6rem; /* Fixed padding */
     border-radius: 16rem;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Fixed font size */
     display: inline-block;
     font-weight: 500;
     align-self: center;
+    text-align: center;
+    margin-top: 0.8rem;
 }
 
 /* Adds a style to the concluded tasks count */
@@ -177,4 +191,65 @@ body {
     text-align: right;
     width: 100%;
     padding-right: 1.6rem;
+}
+
+/* Media query for tablets and larger screens */
+@media (min-width: 768px) {
+    .container {
+        width: 80%;
+        max-width: 45rem;
+    }
+
+    .new-task-form {
+        flex-direction: row;
+    }
+
+    .new-task-form .task-name,
+    .new-task-form .task-label {
+        margin-right: 0.8rem;
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    .new-task-form .add-task-btn {
+        width: auto;
+        max-width: none; /* Remove max-width for larger screens */
+    }
+
+    .task-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .task-details {
+        flex-direction: column;
+        margin-right: 1.6rem; /* Adds space between task details and conclude button/icon */
+    }
+
+    .task-date-container {
+        flex-direction: row; /* Align items horizontally */
+        align-items: center; /* Align items vertically */
+    }
+
+    .label {
+        margin-right: 1rem; /* Increase the margin for larger screens */
+    }
+
+    .conclude-btn,
+    .concluded-icon {
+        width: auto;
+        margin-top: 0;
+    }
+}
+
+/* Media query for desktops and larger screens */
+@media (min-width: 1024px) {
+    .container {
+        width: 60%;
+        max-width: 60rem;
+    }
+
+    .label {
+        margin-right: 2rem; /* Increase the margin for even larger screens */
+    }
 }
